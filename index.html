@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fruit in ABC Order</title><style>
+html,body{margin:0}
+body{background:#efeaf5}
+[hidden]{display:none!important}
+.abc{--ink:#1c1526;--orange:#f47b20;--purple:#6b3fa0;--soft:#fff4e6;--line:#d9cfe6;--good:#1d7a38;--goodbg:#e4f5e9;--bad:#b3261e;--badbg:#fdeceb;--tile:#ffe2c2;--tileedge:#e9a15b;--word:24px;--cardmin:140px;--pic:84px;
+  font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;color:var(--ink);max-width:1000px;margin:0 auto;padding:16px 16px 48px;font-size:18px}
+.abc.size-large{--word:30px;--cardmin:170px;--pic:104px}
+.abc.size-xl{--word:38px;--cardmin:210px;--pic:130px}
+.abc *{box-sizing:border-box}
+.abc button{font:inherit;color:inherit}
+.abc button:focus-visible,.abc input:focus{outline:3px solid var(--orange);outline-offset:2px}
+.abc .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.abc .top h1{margin:0;font-size:32px;color:var(--purple);line-height:1.1}
+.abc .he{font-size:40px;margin-right:10px;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.abc .who{font-weight:700;font-size:20px;border-bottom:3px solid var(--ink);padding:0 6px 2px}
+.abc .panel{background:#fff;border:3px dashed var(--purple);border-radius:16px;padding:16px 18px}
+.abc .lead{font-size:24px;font-weight:700;margin:0 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.abc .howto{display:grid;gap:10px;margin:0 0 14px;font-size:20px}
+.abc .howto div{display:flex;align-items:center;gap:10px}
+.abc .badge{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;font-size:19px;display:inline-flex;align-items:center;justify-content:center}
+.abc .lbl{display:block;font-weight:700;margin:6px 0 4px}
+.abc .namein{font:inherit;font-size:24px;width:100%;max-width:420px;padding:10px 14px;border:3px solid var(--line);border-radius:12px;display:block;margin-bottom:16px}
+.abc .note{color:#5b4d70;font-size:16px}
+.abc .say{font-size:22px;border:2px solid var(--purple);background:#fff;border-radius:12px;padding:2px 10px;cursor:pointer;line-height:1.3}
+.abc .rhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.abc .rhead h2{margin:0;font-size:24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.abc .rbadge{background:var(--orange);color:#fff;font-weight:700;border-radius:999px;padding:4px 14px;font-size:17px}
+.abc .alpha{display:grid;grid-template-columns:repeat(13,1fr);gap:4px;margin:14px 0 0}
+.abc .alpha span{text-align:center;font-weight:700;padding:5px 0;border-radius:7px;border:2px solid var(--line);color:#8a7aa0;font-size:17px;background:#fff}
+.abc .alpha span.on{background:var(--orange);border-color:var(--orange);color:#fff}
+.abc .zl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+.abc .zl h3{margin:0;font-size:20px;color:var(--purple)}
+.abc .cnt{color:#5b4d70;font-size:16px;font-variant-numeric:tabular-nums}
+.abc .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--cardmin),1fr));gap:10px}
+.abc .slot{position:relative;min-height:calc(var(--pic) + 70px);border-radius:14px;background:#f6f2fb;border:3px dashed var(--line);display:flex}
+.abc .slot.empty{align-items:center;justify-content:center}
+.abc .slot .emptytxt{color:#a597b8;font-weight:700}
+.abc .slot .pos{position:absolute;top:-10px;left:-8px;width:32px;height:32px;border-radius:50%;background:var(--purple);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:2;font-size:17px}
+.abc .slot.ok{border:3px solid var(--good);background:var(--goodbg)}
+.abc .slot.no{border:3px solid var(--bad);background:var(--badbg)}
+.abc .slot .mark{position:absolute;top:-10px;right:-8px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;z-index:2;color:#fff}
+.abc .slot.ok .mark{background:var(--good)}
+.abc .slot.no .mark{background:var(--bad)}
+.abc .card{width:100%;min-height:calc(var(--pic) + 64px);border:0;border-radius:14px;background:var(--tile);box-shadow:inset 0 -6px 0 var(--tileedge);cursor:pointer;padding:12px 8px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:transform .12s;-webkit-tap-highlight-color:transparent}
+.abc .card:hover{transform:translateY(-2px)}
+.abc .slot.done .card{cursor:default}
+.abc .card .pic{width:var(--pic);height:var(--pic);object-fit:cover;border-radius:10px;background:#fff}
+.abc .card .emo{font-size:calc(var(--pic) * .62);line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.abc .card .w{font-size:var(--word);font-weight:800;line-height:1.1;text-align:center;overflow-wrap:anywhere}
+.abc .card .w u{text-decoration-thickness:4px;text-underline-offset:5px;text-decoration-color:var(--purple)}
+.abc .card.glow{animation:abcglow 1s ease-in-out 4;box-shadow:inset 0 -6px 0 var(--tileedge),0 0 0 5px var(--purple)}
+@keyframes abcglow{50%{box-shadow:inset 0 -6px 0 var(--tileedge),0 0 0 10px #c9a8ee}}
+@media (prefers-reduced-motion:reduce){.abc .card{transition:none}.abc .card.glow{animation:none}}
+.abc .fb{margin-top:16px;padding:12px 16px;border-radius:14px;font-weight:700;font-size:20px}
+.abc .fb.good{background:var(--goodbg);border:3px solid var(--good);color:var(--good)}
+.abc .fb.bad{background:var(--badbg);border:3px solid var(--bad);color:var(--bad)}
+.abc .fb.info{background:var(--soft);border:3px solid #f2c48d}
+.abc .fb .why{display:block;color:var(--ink);font-weight:400;margin-top:6px}
+.abc .lt{display:inline-block;background:var(--orange);color:#fff;border-radius:6px;padding:0 7px;margin:0 2px}
+.abc .ctl{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.abc .bigbtn{font-weight:800;font-size:22px;border:0;border-radius:14px;padding:14px 26px;background:var(--orange);color:#fff !important;box-shadow:0 4px 0 #b95a10;cursor:pointer}
+.abc .tbtn{font-weight:700;font-size:19px;border:3px solid var(--purple);background:#fff;color:var(--purple) !important;border-radius:14px;padding:11px 18px;cursor:pointer}
+.abc .result{text-align:center}
+.abc .stars{font-size:54px}
+.abc .result h2{font-size:30px;color:var(--purple);margin:6px 0 12px}
+.abc .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+.abc .chip{padding:6px 12px;border-radius:999px;font-weight:700;font-size:17px}
+.abc .chip.ok{background:var(--goodbg);color:var(--good)}
+.abc .chip.try{background:var(--soft);color:#9a4b0c}
+.abc .sent{font-weight:700;color:var(--good);font-size:20px}
+.abc .emailrow{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:10px 0 14px}
+.abc .emailin{font:inherit;padding:8px 12px;border:2px solid var(--line);border-radius:10px;min-width:0;width:280px;max-width:100%}
+.abc .rbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+@media (max-width:560px){.abc .alpha{grid-template-columns:repeat(9,1fr)}.abc .top h1{font-size:26px}.abc .lead{font-size:20px}}
+</style></head><body><div id="root"></div><script>
+const CONFIG={"title":"Fruit in ABC Order","emoji":"🍎","activityId":"mulaihdndswseo","email":"","subject":"ABC order results","items":[{"w":"Apple","e":"🍎","img":""},{"w":"Banana","e":"🍌","img":""},{"w":"Cherry","e":"🍒","img":""},{"w":"Grape","e":"🍇","img":""},{"w":"Kiwi","e":"🥝","img":""},{"w":"Lemon","e":"🍋","img":""},{"w":"Mango","e":"🥭","img":""},{"w":"Orange","e":"🍊","img":""},{"w":"Peach","e":"🍑","img":""},{"w":"Pear","e":"🍐","img":""}],"cardsPerRound":"5","rounds":"3","direction":"az","size":"large","pictures":true,"words":true,"underline":true,"alphabet":true,"hints":true,"showAnswer":true,"readAloud":true,"showScore":true,"ignoreArticles":false};
+(function abcRuntime(){
+  'use strict';
+  function add(el, k){
+    if (k == null || k === false) return;
+    if (Array.isArray(k)) { k.forEach(x => add(el, x)); return; }
+    el.appendChild(typeof k === 'object' ? k : document.createTextNode(String(k)));
+  }
+  function h(tag, props){
+    const el = document.createElement(tag);
+    if (props) for (const k in props) {
+      const v = props[k];
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k === 'value') el.value = v;
+      else if (k.slice(0, 2) === 'on' && typeof v === 'function') el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? '' : v);
+    }
+    for (let i = 2; i < arguments.length; i++) add(el, arguments[i]);
+    return el;
+  }
+  const EMOJI_RE = /[\p{Extended_Pictographic}‍️]/gu;
+  const key = (cfg, t) => { let s = String(t).trim(); if (cfg.ignoreArticles) s = s.replace(/^(the|a|an)\s+/i, ''); return s; };
+  const cmp = (cfg, a, b) => { const r = key(cfg, a).localeCompare(key(cfg, b), undefined, {sensitivity:'base', numeric:true}); return cfg.direction === 'za' ? -r : r; };
+  const same = (cfg, a, b) => cmp(cfg, a, b) === 0;
+  const firstLetter = (cfg, t) => { const m = key(cfg, t).match(/[\p{L}\p{N}]/u); return m ? m[0].toUpperCase() : '?'; };
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  function shuffle(a){ const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = b[i]; b[i] = b[j]; b[j] = t; } return b; }
+  function speak(t){
+    try {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(String(t).replace(EMOJI_RE, ''));
+      u.rate = 0.85; window.speechSynthesis.speak(u);
+    } catch(e) {}
+  }
+  function wordEl(cfg, t){
+    const s = String(t);
+    if (!cfg.underline) return h('span', {class:'w'}, s);
+    const art = cfg.ignoreArticles ? s.match(/^\s*(the|a|an)\s+/i) : null;
+    const start = art ? art[0].length : 0;
+    const m = s.slice(start).match(/[\p{L}\p{N}]/u);
+    if (!m) return h('span', {class:'w'}, s);
+    const i = start + m.index;
+    return h('span', {class:'w'}, s.slice(0, i), h('u', null, s[i]), s.slice(i + 1));
+  }
+  function picEl(it){
+    if (it.img) return h('img', {class:'pic', src:it.img, alt:''});
+    if (it.e) return h('span', {class:'emo', 'aria-hidden':'true'}, it.e);
+    return null;
+  }
+  const ORD = ['first','second','third','fourth','fifth','sixth','seventh','eighth'];
+  function explain(cfg, a, b){
+    const x = key(cfg, a).toLowerCase(), y = key(cfg, b).toLowerCase();
+    let i = 0; while (i < x.length && i < y.length && x[i] === y[i]) i++;
+    if (i >= x.length || i >= y.length) return [a + ' and ' + b + ' match until one word ends. The shorter word goes first.'];
+    const look = i === 0 ? 'Look at the first letter. ' : 'They start the same. Look at the ' + (ORD[i] || (i + 1) + 'th') + ' letter. ';
+    const L = c => h('b', {class:'lt'}, c.toUpperCase());
+    return cfg.direction === 'za'
+      ? [look, L(x[i]), ' comes after ', L(y[i]), ' in the alphabet. In Z to A order, ' + a + ' goes first.']
+      : [look, L(x[i]), ' comes before ', L(y[i]), ' in the alphabet, so ' + a + ' goes first.'];
+  }
+  const encode = o => 'ABC1:' + btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  function dl(name, blob){
+    const a = h('a', {href:URL.createObjectURL(blob), download:name}); document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+  const fmtTime = s => { const m = Math.floor(s / 60), r = s % 60; return m ? m + ' min ' + r + ' sec' : r + ' sec'; };
+
+  function makeRounds(cfg){
+    const items = (cfg.items || []).filter(i => i.w && i.w.trim());
+    const n = cfg.cardsPerRound === 'all' ? items.length : Math.max(2, Math.min(parseInt(cfg.cardsPerRound, 10) || 5, items.length));
+    const count = Math.max(1, parseInt(cfg.rounds, 10) || 1);
+    let deck = []; const out = [];
+    for (let r = 0; r < count; r++) {
+      const pick = [];
+      while (pick.length < n) {
+        if (!deck.length) deck = shuffle(items.filter(x => pick.indexOf(x) < 0));
+        const nx = deck.pop();
+        if (pick.indexOf(nx) < 0) pick.push(nx);
+      }
+      const correct = pick.slice().sort((a, b) => cmp(cfg, a.w, b.w));
+      let pool = shuffle(pick), tries = 0;
+      while (n > 2 && tries++ < 8 && pool.every((it, k) => same(cfg, it.w, correct[k].w))) pool = shuffle(pick);
+      out.push({items:pick, correct, pool, slots:Array(n).fill(null), checks:0, hints:0, shown:false, solved:false, first:null, got:0, marks:null, fb:null, glow:null});
+    }
+    return out;
+  }
+
+  function mount(root, cfg){
+    root.className = 'abc size-' + (cfg.size || 'large');
+    let name = '', started = 0, rounds = [], ri = 0;
+    let embedded = false; try { embedded = window.parent && window.parent !== window; } catch(e) { embedded = true; }
+    const dirText = () => cfg.direction === 'za' ? 'Z to A' : 'A to Z';
+    const valid = (cfg.items || []).filter(i => i.w && i.w.trim());
+    const sayBtn = text => cfg.readAloud && window.speechSynthesis ? h('button', {type:'button', class:'say', title:'Read aloud', 'aria-label':'Read aloud', onclick:() => speak(text)}, '🔊') : null;
+    const top = () => h('header', {class:'top'}, h('h1', null, cfg.emoji ? h('span', {class:'he', 'aria-hidden':'true'}, cfg.emoji) : null, cfg.title || 'ABC Order'), name ? h('span', {class:'who'}, '✏️ ' + name) : null);
+
+    function startScreen(){
+      root.textContent = '';
+      const lead = 'Put the cards in ABC order, ' + dirText() + '.';
+      const nRounds = Math.max(1, parseInt(cfg.rounds, 10) || 1);
+      const nm = h('input', {type:'text', class:'namein', id:'abc-name', placeholder:'Type your name', autocomplete:'off', value:name});
+      const go = h('button', {type:'button', class:'bigbtn', onclick:() => { name = nm.value.trim(); started = Date.now(); rounds = makeRounds(cfg); ri = 0; play(); }}, '▶️ Start');
+      nm.addEventListener('keydown', e => { if (e.key === 'Enter') go.click(); });
+      root.appendChild(top());
+      if (valid.length < 2) { root.appendChild(h('section', {class:'panel'}, h('p', {class:'lead'}, 'This activity needs at least 2 words. Ask staff to add more.'))); return; }
+      root.appendChild(h('section', {class:'panel start'},
+        h('p', {class:'lead'}, lead, sayBtn(lead)),
+        h('div', {class:'howto'},
+          h('div', null, h('span', {class:'badge'}, '1'), 'Tap a card to put it in the next spot.'),
+          h('div', null, h('span', {class:'badge'}, '2'), 'Tap a card in a spot to take it back.'),
+          h('div', null, h('span', {class:'badge'}, '3'), 'Tap ✅ Check when all the cards are placed.')),
+        h('p', {class:'note'}, nRounds + (nRounds === 1 ? ' round' : ' rounds') + '.'),
+        h('label', {for:'abc-name', class:'lbl'}, 'Your name'), nm, go));
+      if (!embedded) setTimeout(() => { try { nm.focus(); } catch(e) {} }, 50);
+    }
+
+    function card(r, it, where, idx){
+      const pic = cfg.pictures !== false ? picEl(it) : null;
+      const showWord = cfg.words !== false || !pic;
+      return h('button', {type:'button', class:'card' + (r.glow === it ? ' glow' : ''), 'aria-label':it.w, onclick:() => {
+        if (r.solved || r.shown) { if (cfg.readAloud) speak(it.w); return; }
+        if (where === 'pool') {
+          const k = r.slots.indexOf(null); if (k < 0) return;
+          r.slots[k] = it; r.pool = r.pool.filter(x => x !== it);
+        } else {
+          r.slots[idx] = null;
+          const rest = r.slots.filter(Boolean);
+          r.slots = rest.concat(Array(r.slots.length - rest.length).fill(null));
+          r.pool.push(it);
+        }
+        if (cfg.readAloud) speak(it.w);
+        r.marks = null; r.fb = null; r.glow = null; play();
+      }}, pic, showWord ? wordEl(cfg, it.w) : null);
+    }
+
+    function check(r){
+      if (r.slots.indexOf(null) >= 0) { r.fb = {kind:'info', body:['Place all ' + r.slots.length + ' cards first, then tap ✅ Check.']}; return; }
+      r.checks++;
+      r.marks = r.slots.map((it, k) => same(cfg, it.w, r.correct[k].w));
+      const got = r.marks.filter(Boolean).length;
+      if (r.first == null) { r.first = r.slots.map(i => i.w); r.got = got; }
+      if (got === r.slots.length) {
+        r.solved = true;
+        r.fb = {kind:'good', body:[r.checks === 1 && !r.hints ? '🎉 All in order on the first try!' : '🎉 All in order. Great work!']};
+        if (cfg.readAloud) speak('All in order. Great work!');
+      } else {
+        const k = r.marks.indexOf(false);
+        r.fb = {kind:'bad', body:[got + ' of ' + r.slots.length + ' are in the right spot. Look at spot ' + (k + 1) + '.', h('span', {class:'why'}, explain(cfg, r.correct[k].w, r.slots[k].w))]};
+      }
+    }
+    function hint(r){
+      r.hints++; r.marks = null;
+      const k = r.slots.findIndex((it, i) => !it || !same(cfg, it.w, r.correct[i].w));
+      if (k < 0) { r.fb = {kind:'good', body:['Everything so far is right. Tap ✅ Check!']}; return; }
+      const need = r.correct[k];
+      const inPool = r.pool.find(x => same(cfg, x.w, need.w));
+      r.glow = inPool || r.slots.find((x, i) => x && i > k && same(cfg, x.w, need.w)) || need;
+      const wrongHere = r.slots[k] ? 'Tap ' + r.slots[k].w + ' to take it back. Then ' : '';
+      r.fb = {kind:'info', body:['💡 Spot ' + (k + 1) + ' needs the word that starts with ', h('b', {class:'lt'}, firstLetter(cfg, need.w)), '. ', wrongHere, inPool ? (wrongHere ? 'find the card glowing below.' : 'It is glowing below.') : (wrongHere ? 'find the glowing card in your spots.' : 'It is glowing in your spots. Tap it to take it back first.')]};
+      if (cfg.readAloud) speak('Spot ' + (k + 1) + ' needs the word that starts with ' + firstLetter(cfg, need.w));
+    }
+    function reveal(r){
+      if (r.first == null) { r.first = []; r.got = 0; }
+      r.shown = true; r.slots = r.correct.slice(); r.pool = []; r.marks = null; r.glow = null;
+      r.fb = {kind:'info', body:['👀 Here is the right order. Read the words from 1 to ' + r.slots.length + ', then go on.']};
+    }
+    function resetRound(r){
+      r.pool = shuffle(r.items); r.slots = Array(r.items.length).fill(null); r.marks = null; r.fb = null; r.glow = null;
+    }
+
+    function play(){
+      const r = rounds[ri];
+      root.textContent = '';
+      root.appendChild(top());
+      const instr = 'Put the cards in ' + dirText() + ' order.';
+      const panel = h('section', {class:'panel'});
+      panel.appendChild(h('div', {class:'rhead'}, h('span', {class:'rbadge'}, 'Round ' + (ri + 1) + ' of ' + rounds.length), h('h2', null, instr, sayBtn(instr))));
+      if (cfg.alphabet) {
+        const on = {}; r.items.forEach(i => { on[firstLetter(cfg, i.w)] = true; });
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''); if (cfg.direction === 'za') letters.reverse();
+        panel.appendChild(h('div', {class:'alpha', 'aria-hidden':'true'}, letters.map(c => h('span', {class:on[c] ? 'on' : null}, c))));
+      }
+      const placed = r.slots.filter(Boolean).length;
+      panel.appendChild(h('div', {class:'zl'}, h('h3', null, 'Your order'), h('span', {class:'cnt'}, placed + ' of ' + r.slots.length + ' placed')));
+      panel.appendChild(h('div', {class:'grid'}, r.slots.map((it, k) => {
+        const cls = 'slot' + (it ? '' : ' empty') + (r.marks ? (r.marks[k] ? ' ok' : ' no') : '') + (r.shown || r.solved ? ' done' : '');
+        return h('div', {class:cls}, h('span', {class:'pos'}, String(k + 1)), r.marks ? h('span', {class:'mark', 'aria-label':r.marks[k] ? 'right' : 'not right'}, r.marks[k] ? '✓' : '✗') : null, it ? card(r, it, 'slot', k) : h('span', {class:'emptytxt'}, 'Empty'));
+      })));
+      if (!r.solved && !r.shown) {
+        panel.appendChild(h('div', {class:'zl'}, h('h3', null, 'Cards'), h('span', {class:'cnt'}, 'Tap a card to place it')));
+        panel.appendChild(h('div', {class:'grid pool'}, r.pool.length ? r.pool.map(it => card(r, it, 'pool')) : h('p', {class:'note'}, 'All cards are placed. Tap ✅ Check.')));
+      }
+      if (r.fb) panel.appendChild(h('div', {class:'fb ' + r.fb.kind, role:'status'}, r.fb.body));
+      const ctl = h('div', {class:'ctl'});
+      if (r.solved || r.shown) {
+        const last = ri === rounds.length - 1;
+        ctl.appendChild(h('button', {type:'button', class:'bigbtn', onclick:() => { if (last) finish(); else { ri++; play(); window.scrollTo(0, 0); } }}, last ? "🏁 I'm done!" : 'Next round ➡️'));
+      } else {
+        ctl.appendChild(h('button', {type:'button', class:'bigbtn', onclick:() => { check(r); play(); }}, '✅ Check'));
+        if (cfg.hints) ctl.appendChild(h('button', {type:'button', class:'tbtn', onclick:() => { hint(r); play(); }}, '💡 Hint'));
+        ctl.appendChild(h('button', {type:'button', class:'tbtn', onclick:() => { resetRound(r); play(); }}, '🔄 Start over'));
+        if (cfg.showAnswer) ctl.appendChild(h('button', {type:'button', class:'tbtn', onclick:() => { reveal(r); play(); }}, '👀 Show answer'));
+      }
+      panel.appendChild(ctl);
+      root.appendChild(panel);
+    }
+
+    function finish(){
+      const seconds = Math.round((Date.now() - started) / 1000);
+      let got = 0, total = 0; rounds.forEach(r => { got += r.got; total += r.items.length; });
+      const result = {v:1, kind:'abc-order', id:uid(), activity:cfg.title || 'ABC Order', activityId:cfg.activityId || '', student:name, date:new Date().toISOString(), seconds, direction:cfg.direction || 'az',
+        rounds:rounds.map(r => ({correct:r.correct.map(i => i.w), first:r.first || [], got:r.got, total:r.items.length, checks:r.checks, hints:r.hints, shown:r.shown, solved:r.solved})), got, total};
+      const code = encode(result);
+      const text = () => {
+        const L = [(cfg.title || 'ABC Order') + ' - results', 'Student: ' + (name || '(no name entered)'), 'Date: ' + new Date().toLocaleString(), 'Time spent: ' + fmtTime(seconds), 'Score (first try): ' + got + ' of ' + total, ''];
+        result.rounds.forEach((r, i) => L.push('Round ' + (i + 1) + ': ' + r.got + ' of ' + r.total + ' on the first try. ' + (r.shown ? 'Answer shown.' : 'Solved after ' + r.checks + (r.checks === 1 ? ' check' : ' checks') + '.') + (r.hints ? ' Hints: ' + r.hints + '.' : '')));
+        L.push('', 'Results code for the ABC Order Maker app (keep this line):', code);
+        return L.join('\n');
+      };
+      const pct = total ? got / total : 1;
+      const stars = pct >= 0.9 ? '⭐⭐⭐' : pct >= 0.6 ? '⭐⭐' : '⭐';
+      root.textContent = '';
+      root.appendChild(top());
+      const status = h('p', {class:'sent', hidden:true}, '✅ Your results were sent to the app.');
+      if (embedded) {
+        const onAck = e => { if (e.data && e.data.type === 'abc-order-ack' && e.data.id === result.id) { status.hidden = false; window.removeEventListener('message', onAck); } };
+        window.addEventListener('message', onAck);
+        try { window.parent.postMessage({type:'abc-order-result', code}, '*'); } catch(e) {}
+      }
+      const subject = (cfg.subject || 'ABC order results') + (name ? ' - ' + name : '');
+      const em = h('input', {type:'email', class:'emailin', placeholder:'name@example.com', value:cfg.email || '', 'aria-label':'Email address for results'});
+      const btns = h('div', {class:'rbtns'},
+        h('button', {type:'button', class:'bigbtn', onclick:() => {
+          const q = 'to=' + encodeURIComponent(em.value.trim()) + '&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text());
+          const w = window.open('https://mail.google.com/mail/?view=cm&fs=1&' + q, '_blank');
+          if (!w) window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&' + q;
+        }}, '📧 Open in Gmail'),
+        h('button', {type:'button', class:'tbtn', onclick:() => {
+          const a = h('a', {href:'mailto:' + em.value.trim() + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text())});
+          document.body.appendChild(a); a.click(); a.remove();
+        }}, '✉️ Email app'),
+        h('button', {type:'button', class:'tbtn', onclick:function(){
+          const btn = this, t = text();
+          const ok = () => { btn.textContent = '✅ Copied'; setTimeout(() => { btn.textContent = '📋 Copy results'; }, 2000); };
+          const fallback = () => { const ta = h('textarea', {style:'position:fixed;left:-999px'}); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch(e) {} ta.remove(); };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fallback); else fallback();
+        }}, '📋 Copy results'),
+        h('button', {type:'button', class:'tbtn', onclick:() => dl('abc-results' + (name ? '-' + name.replace(/[^\w-]+/g, '_') : '') + '.txt', new Blob([text()], {type:'text/plain'}))}, '💾 Save results file'),
+        h('button', {type:'button', class:'tbtn', onclick:() => { mount(root, cfg); window.scrollTo(0, 0); }}, '🔄 Start over'));
+      root.appendChild(h('section', {class:'panel result'},
+        h('div', {class:'stars'}, stars),
+        h('h2', null, cfg.showScore ? 'You got ' + got + ' of ' + total + ' on the first try!' : 'Great work!'),
+        cfg.showScore ? h('div', {class:'chips'}, result.rounds.map((r, i) => h('span', {class:'chip ' + (r.got === r.total ? 'ok' : 'try')}, (r.got === r.total ? '✅ ' : '🔁 ') + 'Round ' + (i + 1) + ': ' + r.got + '/' + r.total))) : null,
+        status,
+        h('div', {class:'emailrow'}, h('label', null, '📧 Send to: '), em),
+        btns,
+        h('p', {class:'note'}, 'Open in Gmail needs internet and a Gmail sign-in. No internet? Use Copy results or Save results file and give it to staff.')));
+      if (cfg.readAloud && cfg.showScore) speak('You got ' + got + ' of ' + total + '.');
+      window.scrollTo(0, 0);
+    }
+
+    startScreen();
+  }
+  window.ABC = {mount:mount};
+})();
+ABC.mount(document.getElementById("root"),CONFIG);
+</script></body></html>
